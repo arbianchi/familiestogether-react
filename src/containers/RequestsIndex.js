@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Request from '../components/Request';
+import { connect } from 'react-redux';
+import { fetchRequests} from '../actions/index'; 
+import { Link } from 'react-router';
+
 
 const dummy = {
     "requests": [
@@ -45,47 +49,15 @@ const dummy = {
     ]
 };
 
-export default class RequestsIndex extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      requests: [],
-      token: null
-    };
+class RequestsIndex extends Component {
+  
+  componentWillMount() {
+    this.props.fetchRequests();
   }
   
-  getCurrentUserId() {
-    return 3;
-  }
-  
-  componentDidMount() {
-    let userId = 28;
-    axios.post("http://47d99e03.ngrok.io/login", {
-      email: "r@r.com",
-      password: "password"
-    })
-    .then( resp => {
-      const token = resp.data.token;
-      this.setState({ token });
-      console.log('TOKEN', token)
-      
-      axios.get(`http://47d99e03.ngrok.io/users/${userId}/ride/requests.json`, {
-        headers: {'Authorization': token }
-      })
-      .then( json  => {
-        this.setState({ requests: json.requests});
-        console.log( this.state );
-      })
-      .catch( err => console.log( err )); 
-      })
-    .catch( err => console.log( err ));
-    
-    // this.setState({ requests: dummy.requests});
-  }
-
   render() {
-    console.log( this.state );
-    const requests = this.state.requests.map(request => ( <Request request={request}/> ));
+    console.log("PROPS", this.props);
+    const requests = this.props.ride_requests.map(request => ( <Request request={request}/> ));
     
     return (
       <div>
@@ -117,3 +89,6 @@ export default class RequestsIndex extends Component {
     );
   }
 }
+
+export default connect(null, { fetchRequests })(RequestsIndex);
+

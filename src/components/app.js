@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 // import '../App.css';
 import Registration from '../containers/Registration';
 import NavbarContainer from '../containers/NavbarContainer';
-// import RequestsList from '../containers/RequestsList';
+// import RequestsIfrom '../containers/RequestsList';
 // import AvailabilityList from '../containers/AvailabilityList';
 
 export default class App extends Component {
@@ -17,3 +17,4 @@ export default class App extends Component {
     );
   }
 }
+
