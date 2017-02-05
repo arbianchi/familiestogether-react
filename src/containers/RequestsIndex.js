@@ -1,49 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Request from '../components/Request';
-
-const dummy = {
-    "requests": [
-        {
-            "request_id": "1",
-            "rider": {
-                "id": "1",
-                "full_name": "foo bar",
-            },
-            "volunteer": {
-                "id": "2",
-                "full_name": "volunt teer",
-            },
-            "route": {
-                "id": "3",
-                "pickup_address": "address1",
-                "dropoff_address": "address2",
-                "distance": "3.1"
-            },
-            "arrival_time": "sometime",
-            "status": "confirmed"
-        },
-        {
-            "request_id": "2",
-            "rider": {
-                "id": "1",
-                "full_name": "bar foo",
-            },
-            "volunteer": {
-                "id": "2",
-                "full_name": "other volunteer",
-            },
-            "route": {
-                "id": "5",
-                "pickup_address": "address1",
-                "dropoff_address": "address2",
-                "distance": "4.1"
-            },
-            "arrival_time": "sometime",
-            "status": "pending",
-        }
-    ]
-};
+import { connect } from 'react-redux';
+import { fetchRequests} from '../actions/index'; 
+import { Link } from 'react-router';
 
 export default class RequestsIndex extends Component {
   constructor(props) {
@@ -53,28 +13,24 @@ export default class RequestsIndex extends Component {
       token: null
     };
   }
-  
-  getCurrentUserId() {
-    return 3;
-  }
+  // componentWillMount() {
+  //   this.props.fetchRequests();
+  // }
   
   componentDidMount() {
-    let userId = 28;
-    axios.post("http://47d99e03.ngrok.io/login", {
+    axios.post("http://b106753d.ngrok.io/login", {
       email: "r@r.com",
       password: "password"
     })
     .then( resp => {
       const token = resp.data.token;
       this.setState({ token });
-      console.log('TOKEN', token)
-      
-      axios.get(`http://47d99e03.ngrok.io/users/${userId}/ride/requests.json`, {
+      axios.get(`http://b106753d.ngrok.io/requests.json`, {
         headers: {'Authorization': token }
       })
       .then( json  => {
-        this.setState({ requests: json.requests});
-        console.log( this.state );
+        console.log('json', json.data)
+        this.setState({ requests: json.data.ride_requests});
       })
       .catch( err => console.log( err )); 
       })
@@ -84,7 +40,7 @@ export default class RequestsIndex extends Component {
   }
 
   render() {
-    console.log( this.state );
+    debugger;
     const requests = this.state.requests.map(request => ( <Request request={request}/> ));
     
     return (
