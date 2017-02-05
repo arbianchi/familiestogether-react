@@ -49,7 +49,8 @@ export default class RequestsIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      requests: []
+      requests: [],
+      token: null
     };
   }
   
@@ -58,21 +59,33 @@ export default class RequestsIndex extends Component {
   }
   
   componentDidMount() {
-    // let userId = getCurrentUserId();
-    // axios.get("http://families-together.herokuapp.com/users/${userId}/requests.json")
-    // .then( response => response.json() )
-    // .then( json  => {
-    //   const status = json.requests.map(request => request.status);
-    //   this.setState({ status: status});
-    //   console.log( this.state );
-    // })
-    // .catch( err => console.log( err )); 
+    let userId = 28;
+    axios.post("http://47d99e03.ngrok.io/login", {
+      email: "r@r.com",
+      password: "password"
+    })
+    .then( resp => {
+      const token = resp.data.token;
+      this.setState({ token });
+      console.log('TOKEN', token)
+      
+      axios.get(`http://47d99e03.ngrok.io/users/${userId}/ride/requests.json`, {
+        headers: {'Authorization': token }
+      })
+      .then( json  => {
+        this.setState({ requests: json.requests});
+        console.log( this.state );
+      })
+      .catch( err => console.log( err )); 
+      })
+    .catch( err => console.log( err ));
     
-    this.setState({ requests: dummy.requests});
+    // this.setState({ requests: dummy.requests});
   }
 
   render() {
-    const requests = this.state.requests.map(request => ( <Request  key={request.id} request={request}/> ));
+    console.log( this.state );
+    const requests = this.state.requests.map(request => ( <Request request={request}/> ));
     
     return (
       <div>

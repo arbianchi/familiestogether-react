@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 const Request = ({request}) => {
   return (
-    <tr>
+    <tr key={request.full_name}>
       <td>{request.rider.full_name}</td>
       <td>{request.volunteer.full_name}</td>
       <td>{request.status}</td>
