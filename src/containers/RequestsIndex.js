@@ -14,12 +14,10 @@ class RequestsIndex extends Component {
     };
   }
   componentDidMount() {
-    this.props.fetchToken();
-    
     const token = this.state.token;
     
-    axios.get(`http://b106753d.ngrok.io/requests.json`, {
-      headers: {'Authorization': token }
+    axios.get("http://families-together.herokuapp.com/requests", {
+      headers: {'Authorization': this.state.token }
     })
     .then( json  => {
       this.setState({ requests: json.data.ride_requests});
