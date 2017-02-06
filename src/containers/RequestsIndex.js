@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Request from '../components/Request';
 import { connect } from 'react-redux';
-import { fetchToken} from '../actions/index'; 
 import { Link } from 'react-router';
 
-class RequestsIndex extends Component {
+export default class RequestsIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,6 +58,3 @@ class RequestsIndex extends Component {
     );
   }
 }
-
-export default connect(null, { fetchToken })(RequestsIndex);
-
