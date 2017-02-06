@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import RequestsReducer from './reducer_requests';
+import TokenReducer from './token';
 
 const rootReducer = combineReducers({
-  requests: RequestsReducer,
+  requests: TokenReducer,
   form: formReducer
 });
 

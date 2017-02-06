@@ -2,62 +2,34 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Request from '../components/Request';
 import { connect } from 'react-redux';
-import { fetchRequests} from '../actions/index'; 
+import { fetchToken} from '../actions/index'; 
 import { Link } from 'react-router';
 
-
-const dummy = {
-    "requests": [
-        {
-            "request_id": "1",
-            "rider": {
-                "id": "1",
-                "full_name": "foo bar",
-            },
-            "volunteer": {
-                "id": "2",
-                "full_name": "volunt teer",
-            },
-            "route": {
-                "id": "3",
-                "pickup_address": "address1",
-                "dropoff_address": "address2",
-                "distance": "3.1"
-            },
-            "arrival_time": "sometime",
-            "status": "confirmed"
-        },
-        {
-            "request_id": "2",
-            "rider": {
-                "id": "1",
-                "full_name": "bar foo",
-            },
-            "volunteer": {
-                "id": "2",
-                "full_name": "other volunteer",
-            },
-            "route": {
-                "id": "5",
-                "pickup_address": "address1",
-                "dropoff_address": "address2",
-                "distance": "4.1"
-            },
-            "arrival_time": "sometime",
-            "status": "pending",
-        }
-    ]
-};
-
 class RequestsIndex extends Component {
-  
-  componentWillMount() {
-    this.props.fetchRequests();
+  constructor(props) {
+    super(props);
+    this.state = {
+      requests: [],
+      token: null
+    };
+  }
+  componentDidMount() {
+    this.props.fetchToken();
+    
+    const token = this.state.token;
+    
+    axios.get(`http://b106753d.ngrok.io/requests.json`, {
+      headers: {'Authorization': token }
+    })
+    .then( json  => {
+      this.setState({ requests: json.data.ride_requests});
+    })
+    .catch( err => console.log( err )); 
   }
   
+  
   render() {
-    console.log("PROPS", this.props);
-    const requests = this.props.ride_requests.map(request => ( <Request request={request}/> ));
+    const requests = this.state.requests.map(request => ( <Request request={request}/> ));
     
     return (
       <div>
@@ -90,5 +62,5 @@ class RequestsIndex extends Component {
   }
 }
 
-export default connect(null, { fetchRequests })(RequestsIndex);
+export default connect(null, { fetchToken })(RequestsIndex);
 
