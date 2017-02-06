@@ -5,7 +5,6 @@ const INITIAL_STATE = { token: null, request: null };
 export default function(state = INITIAL_STATE, action) {
   switch(action.type) {
   case FETCH_TOKEN:
-  debugger;
     return { ...state, token: action.payload.data.token };
     default: 
       return state;
