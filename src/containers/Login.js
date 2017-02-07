@@ -1,9 +1,22 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import { reduxForm } from 'redux-form';
-import { fetchToken } from '../actions/index';
-
+import axios from 'axios';
 
 class Login extends Component {
+  
+  static contextTypes = {
+    router: PropTypes.object
+  };
+  
+  onSubmit(props) {
+    axios.post("http://families-together.herokuapp.com/login", props)
+     .then( resp => { localStorage.setItem('token', resp.data.token); })
+     .then(() => {
+       this.context.router.push('/requests');
+     })
+     .catch( err => console.log( err )); 
+  }
+  
   render() {
     
     const { fields: { email, password}, handleSubmit } = this.props;
@@ -17,7 +30,7 @@ class Login extends Component {
     			    	<h3 className="panel-title">Please sign in</h3>
     			 	  </div>
     			  	<div className="panel-body">
-    			  	  <form onSubmit={handleSubmit(this.props.fetchToken)}>
+    			  	  <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
   			    	  	<div className="form-group">
   			    		    <input className="form-control" placeholder="E-mail" type="text" {...email} />
     			    		</div>
@@ -35,12 +48,7 @@ class Login extends Component {
   }
 }
 
-function mapStateToProps(state) {
-
-  return { token: state.token};
-}
-
 export default reduxForm({
   form: 'LoginForm',
   fields: ['email', 'password']}
-, mapStateToProps, { fetchToken })(Login);
+, null, null)(Login);
