@@ -14,12 +14,12 @@ export default class NavbarContainer extends Component {
         </Nav>
       );
     } else {
-        return(
-          <Nav>
-            <NavItem eventKey={1} href="/register">Register</NavItem>
-            <NavItem eventKey={2} href="/login">Login</NavItem>
-          </Nav>
-        );
+      return(
+        <Nav>
+          <NavItem eventKey={1} href="/register">Register</NavItem>
+          <NavItem eventKey={2} href="/login">Login</NavItem>
+        </Nav>
+      );
     }
   }
   render() {
