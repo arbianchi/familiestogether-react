@@ -12,7 +12,7 @@ class RequestsIndex extends Component {
     };
   }
   componentDidMount() {
-    const token = this.props.token;
+    const token = localStorage.getItem('token');
     console.log('TOKEN', token);
     
     axios.get("http://families-together.herokuapp.com/users/2/ride/requests.json", {
