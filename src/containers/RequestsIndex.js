@@ -4,19 +4,19 @@ import Request from '../components/Request';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-export default class RequestsIndex extends Component {
+class RequestsIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      requests: [],
-      token: null
+      requests: []
     };
   }
   componentDidMount() {
-    const token = this.state.token;
+    const token = this.props.token;
+    console.log('TOKEN', token);
     
-    axios.get("http://families-together.herokuapp.com/requests", {
-      headers: {'Authorization': this.state.token }
+    axios.get("http://families-together.herokuapp.com/users/2/ride/requests.json", {
+      headers: {'Authorization': token }
     })
     .then( json  => {
       this.setState({ requests: json.data.ride_requests});
@@ -58,3 +58,9 @@ export default class RequestsIndex extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return { token: state.token };
+}
+
+export default connect(mapStateToProps)(RequestsIndex);

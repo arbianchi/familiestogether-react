@@ -35,7 +35,11 @@ class Login extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return { token: state.token};
+}
+
 export default reduxForm({
   form: 'LoginForm',
   fields: ['email', 'password']}
-, null, { fetchToken })(Login);
+, mapStateToProps, { fetchToken })(Login);
