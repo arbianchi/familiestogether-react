@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import { reduxForm } from 'redux-form';
 import axios from 'axios';
+import AddressForm from '../components/Address';
 import DateTimePicker from 'react-datetimepicker-bootstrap';
 
 
@@ -26,31 +27,30 @@ class NewRequest extends Component {
     const { fields: { pickup_address, dropoff_address, arrival_datetime }, handleSubmit } = this.props;
 
     return(
-      <div className="container">
+      <div>
+        <h1>Request a Ride</h1>
+		  	  <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+        <div className="container">
 
-        <div className="row">
-      		<div className="col-md-4 col-md-offset-4">
-        		<div className="panel panel-default">
-    			  	<div className="panel-heading">
-    			    	<h3 className="panel-title">Request a Ride</h3>
-    			 	  </div>
-    			  	<div className="panel-body">
-    			  	  <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-  			    	  	<div className="form-group">
-  			    		    <input className="form-control" placeholder="Pick Up Address" type="text" {...pickup_address} />
-    			    		</div>
-  			    	  	<div className="form-group">
-  			    		    <input className="form-control" placeholder="Drop Off Address" type="text" {...dropoff_address} />
-    			    		</div>
-  			    	  	<div className="form-group">
-                    <DateTimePicker className="form-control" placeholder="Arrival Date and Time" id="datetimepicker" {...arrival_datetime}/>
-    			    		</div>
-    			    		<button type="submit" className="btn btn-primary">Submit Request</button>
-    			      </form>
-    			    </div>
-      			</div>
-      		</div>
-      	</div>
+          <div className="row">
+        		<div className="col-md-4 col-md-offset-4">
+          		<div className="panel panel-default">
+      			  	<div className="panel-heading">
+      			    	<h3 className="panel-title">Request a Ride</h3>
+      			 	  </div>
+      			  	<div className="panel-body">
+                    <AddressForm {...pickup_address} />
+                    <AddressForm {...dropoff_address} />
+      			    </div>
+        			</div>
+              <div className="m-b-l">
+                <DateTimePicker className="form-control" placeholder="Arrival Date and Time" id="datetimepicker" {...arrival_datetime}/>
+              </div>
+        		</div>
+        	</div>
+        </div>
+        	<button type="submit" className="btn btn-primary">Submit Request</button>
+      	</form>
       </div>
     );
   }
