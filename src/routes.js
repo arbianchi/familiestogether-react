@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './components/app';
 import RequestsIndex from './containers/RequestsIndex';
+import NewRequest from './containers/NewRequest';
 import AvailabilityIndex from './containers/AvailabilityIndex';
 import Registration from './containers/Registration';
 import Login from './containers/Login';
@@ -14,6 +15,7 @@ export default (
       <Route path="login" component={Login} />
       <Route path="Profile" component={Profile} />
       <Route path="requests" component={RequestsIndex} />
+      <Route path="requests/new" component={NewRequest} />
       <Route path="availability" component={AvailabilityIndex} />
     </Route>
 );
