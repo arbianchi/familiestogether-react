@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import { reduxForm } from 'redux-form';
 import axios from 'axios';
+import DateTimePicker from 'react-datetimepicker-bootstrap';
+
 
 class NewRequest extends Component {
   
@@ -25,11 +27,12 @@ class NewRequest extends Component {
 
     return(
       <div className="container">
+
         <div className="row">
       		<div className="col-md-4 col-md-offset-4">
         		<div className="panel panel-default">
     			  	<div className="panel-heading">
-    			    	<h3 className="panel-title">Register</h3>
+    			    	<h3 className="panel-title">Request a Ride</h3>
     			 	  </div>
     			  	<div className="panel-body">
     			  	  <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
@@ -40,7 +43,7 @@ class NewRequest extends Component {
   			    		    <input className="form-control" placeholder="Drop Off Address" type="text" {...dropoff_address} />
     			    		</div>
   			    	  	<div className="form-group">
-  			    		    <input className="form-control" placeholder="Arrival Date and Time" type="text" {...arrival_datetime} />
+                    <DateTimePicker className="form-control" placeholder="Arrival Date and Time" id="datetimepicker" {...arrival_datetime}/>
     			    		</div>
     			    		<button type="submit" className="btn btn-primary">Submit Request</button>
     			      </form>

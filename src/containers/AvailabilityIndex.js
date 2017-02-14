@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { SingleDatePicker } from 'react-dates';
+import { DateRangePicker } from 'react-dates';
+
+
+
 import Availability from '../components/Availability';
 
 const dummy = {
@@ -49,13 +54,31 @@ export default class AvailabilityIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      availabilities: []
+      availabilities: [],
+      date: null,
+      focused: false,
+      focusedInput: null,
+      startDate: null,
+      endDate: null
     };
+    
+    
+    this.onDatesChange = this.onDatesChange.bind(this);
+    this.onFocusChange = this.onFocusChange.bind(this);
   }
   
   getCurrentUserId() {
     return 3;
   }
+  
+  onDatesChange({ startDate, endDate }) {
+    this.setState({ startDate, endDate });
+  }
+
+  onFocusChange(focusedInput) {
+    this.setState({ focusedInput });
+  }
+
   
   componentDidMount() {
     // let userId = getCurrentUserId();
@@ -70,11 +93,14 @@ export default class AvailabilityIndex extends Component {
   }
 
   render() {
+    const { focusedInput, startDate, endDate } = this.state;
+
     const availabilities = this.state.availabilities.map( availability => ( <Availability availability={availability} key={availability.id}/> ));
     
     return (
       <div>
         <h2>My Availability</h2>
+
         <div className="panel panel-default">
           <div className="panel-heading">
             <h2 className="panel-title">
@@ -94,6 +120,16 @@ export default class AvailabilityIndex extends Component {
             </tbody>
           </table>
         </div>
+        <div>
+           <DateRangePicker
+             {...this.props}
+             onDatesChange={this.onDatesChange}
+             onFocusChange={this.onFocusChange}
+             focusedInput={focusedInput}
+             startDate={startDate}
+             endDate={endDate}
+           />
+         </div>
       </div>
     );
   }

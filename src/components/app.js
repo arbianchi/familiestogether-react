@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 // import logo from '../logo.svg';
-// import '../App.css';
+// import '../../style/style.css';
 import Registration from '../containers/Registration';
 import NavbarContainer from '../containers/NavbarContainer';
 // import RequestsIfrom '../containers/RequestsList';
