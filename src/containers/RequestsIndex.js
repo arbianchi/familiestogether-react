@@ -54,6 +54,9 @@ class RequestsIndex extends Component {
             </tbody>
           </table>
         </div>
+        <div className='m-t-l'>
+          <Link to="requests/new" className='btn btn-primary'>New Request</Link>
+        </div>
       </div>
     );
   }
