@@ -12,14 +12,14 @@ class Registration extends Component {
     axios.post("http://families-together.herokuapp.com/register", props)
      .then( resp => { localStorage.setItem('token', resp.data.token); })
      .then(() => {
-       this.context.router.push('/profile');
+       this.context.router.push('/profile/new');
      })
      .catch( err => console.log( err )); 
   }
   
   render() {
     
-    const { fields: { first_name, last_name, email, password, password_confirmation }, handleSubmit } = this.props;
+    const { fields: { role, first_name, last_name, email, password, password_confirmation }, handleSubmit } = this.props;
 
     return(
       <div className="container">
@@ -31,6 +31,10 @@ class Registration extends Component {
     			 	  </div>
     			  	<div className="panel-body">
     			  	  <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                  <div className="form-group">
+                    <label className="radio-inline"><input type="radio" name="volunteer"/>Volunteer</label>
+                    <label className="radio-inline"><input type="radio" name="rider"/>Rider</label>
+                  </div>
   			    	  	<div className={`form-group ${first_name.touched && first_name.invalid ? 'has-danger' : ''}`}>
   			    		    <input className="form-control" placeholder="First Name" type="text" {...first_name} />
                     <div className='text-help'>
@@ -79,6 +83,11 @@ function validate(values) {
       errors[field] = 'Field cannot be blank'
     }
   }
+  
+  if ( values.password && values.password.length < 7) {
+    errors.password = 'Passwords must be a least 6 characters long.';
+  }
+  
   if (values.password != values.password_confirmation) {
     errors.password_confirmation = 'Password does not match.';
   }
@@ -87,5 +96,5 @@ function validate(values) {
 
 export default reduxForm({
   form: 'RegistrationForm',
-  fields: ['first_name', 'last_name', 'email', 'password', 'password_confirmation'], validate}
+  fields: ['role', 'first_name', 'last_name', 'email', 'password', 'password_confirmation'], validate}
 , null, null)(Registration);

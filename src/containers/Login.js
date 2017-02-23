@@ -63,11 +63,15 @@ class Login extends Component {
 
 function validate(values) {
   const errors = {};
-  if (!values.email) {
-    errors.email = 'E-mail Required';
+  const emailPattern = /(.+)@(.+){2,}\.(.+){2,}/;
+  
+  if (!values.email || !emailPattern.test(values.email)) {
+    errors.email = 'Please enter a valid email address.';
   }
   if (!values.password) {
     errors.password = 'Password required.';
+  } else if ( values.password.length < 7) {
+    errors.password = 'Passwords must be a least 6 characters long.';
   }
   return errors;
 }
