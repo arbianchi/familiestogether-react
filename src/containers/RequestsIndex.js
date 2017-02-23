@@ -15,7 +15,7 @@ class RequestsIndex extends Component {
     const token = localStorage.getItem('token');
     console.log('TOKEN', token);
     
-    axios.get("http://families-together.herokuapp.com/users/2/ride/requests.json", {
+    axios.get("http://families-together.herokuapp.com/requests", {
       headers: {'Authorization': token }
     })
     .then( json  => {

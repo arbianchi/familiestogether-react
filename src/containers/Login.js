@@ -10,16 +10,22 @@ class Login extends Component {
   
   onSubmit(props) {
     axios.post("http://families-together.herokuapp.com/login", props)
-     .then( resp => { localStorage.setItem('token', resp.data.token); })
-     .then(() => {
-       this.context.router.push('/requests');
+     .then( resp => { 
+       localStorage.setItem('token', resp.data.token); 
+       console.log('toktok', localStorage.token);
+        if ( localStorage.token.length) {
+          this.context.router.push('/requests');
+         } else {
+          this.context.router.push('/login');
+         }
      })
      .catch( err => console.log( err )); 
+     
   }
   
   render() {
     
-    const { fields: { email, password}, handleSubmit } = this.props;
+    const { fields: { email, password}, pristine, submitting, handleSubmit } = this.props;
 
     return(
       <div className="container">
@@ -31,11 +37,18 @@ class Login extends Component {
     			 	  </div>
     			  	<div className="panel-body">
     			  	  <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-  			    	  	<div className="form-group">
-  			    		    <input className="form-control" placeholder="E-mail" type="text" {...email} />
+  			    	  	<div className={`form-group ${email.touched && email.invalid ? 'has-danger' : ''}`}>
+  			    		    <input className='form-control' placeholder="E-mail" type="text" {...email} />
+                    <div className='text-help'>
+                      {email.touched ? email.error : ''}
+                    </div>
+                
     			    		</div>
-  			    	  	<div className="form-group">
-  			    		    <input className="form-control" placeholder="Password" type="text" {...password} />
+  			    	  	<div className={`form-group ${password.touched && password.invalid ? 'has-danger' : ''}`}>
+  			    		    <input className="form-control" placeholder="Password" type="password" {...password} />
+                    <div className='text-help'>
+                      {password.touched ? password.error : ''}
+                    </div>
     			    		</div>
     			    		<button type="submit" className="btn btn-primary">Submit</button>
     			      </form>
@@ -48,7 +61,18 @@ class Login extends Component {
   }
 }
 
+function validate(values) {
+  const errors = {};
+  if (!values.email) {
+    errors.email = 'E-mail Required';
+  }
+  if (!values.password) {
+    errors.password = 'Password required.';
+  }
+  return errors;
+}
+
 export default reduxForm({
   form: 'LoginForm',
-  fields: ['email', 'password']}
-, null, null)(Login);
+  fields: ['email', 'password'],
+  validate, null, null})(Login);
