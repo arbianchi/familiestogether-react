@@ -3,27 +3,27 @@ import { reduxForm } from 'redux-form';
 import axios from 'axios';
 
 class ProfileForm extends Component {
-  
+
   static contextTypes = {
     router: PropTypes.object
   };
-  
+
   onSubmit(props) {
     axios.post("http://families-together.herokuapp.com/profile/new", props)
-     .then( resp => { 
-       localStorage.setItem('token', resp.data.token); 
+     .then( resp => {
+       localStorage.setItem('token', resp.data.token);
         if ( localStorage.token.length) {
           this.context.router.push('/profile');
          } else {
           this.context.router.push('/profile/new');
          }
      })
-     .catch( err => console.log( err )); 
-     
+     .catch( err => console.log( err ));
+
   }
-  
+
   render() {
-    
+
     const { fields: { role, phone, gender, street, city, state, zipcode }, handleSubmit } = this.props;
 
     return(
@@ -36,11 +36,11 @@ class ProfileForm extends Component {
                   <div className="panel-heading">
                     <h3 className="panel-title">Profile</h3>
                   </div>
-                  <div className="form-group">
-                      <label className="radio-inline"><input type="radio" name="male" {...role}/>Volunteer</label>
-                      <label className="radio-inline"><input type="radio" name="female" {...role}/>Rider</label>
-                  </div>
                   <div className="panel-body">
+                    <div className="form-group">
+                        <label className="radio-inline"><input type="radio" name="male" {...role}/>Volunteer</label>
+                        <label className="radio-inline"><input type="radio" name="female" {...role}/>Rider</label>
+                    </div>
                     <div className="form-group">
                       <input className="form-control" placeholder="Phone" type="text" {...phone} />
                     </div>
@@ -52,6 +52,7 @@ class ProfileForm extends Component {
                     </div>
                     <div className="form-group">
                         <select className="form-control" placeholder="Select State" type="select" {...state} >
+                            <option value="">Select State</option>
                             <option value="">N/A</option>
                             <option value="AK">Alaska</option>
                             <option value="AL">Alabama</option>
@@ -106,7 +107,7 @@ class ProfileForm extends Component {
                             <option value="WV">West Virginia</option>
                             <option value="WY">Wyoming</option>
                         </select>
-                    </div>           
+                    </div>
                     <div className="form-group">
                       <input className="form-control" placeholder="Zipcode" type="text" {...zipcode} />
                     </div>
@@ -130,7 +131,7 @@ function validate(values) {
   const errors = {};
   const phonePattern = /^(()?\d{3}())?(-|\s)?\d{3}(-|\s)?\d{4}$/;
   const emailPattern = /(.+)@(.+){2,}\.(.+){2,}/;
-   
+
   if (!values.email || !emailPattern.test(values.email)) {
     errors.email = 'Please enter a valid email address.';
   }
@@ -147,5 +148,4 @@ function validate(values) {
 
 export default reduxForm({
   form: 'NewProfileForm',
-  fields: ['role', 'gender', 'phone', 'street', 'city', 'state', 'zipcode'], validate}
-, null, null)(ProfileForm);
+  fields: ['role', 'gender', 'phone', 'street', 'city', 'state', 'zipcode'], validate})(ProfileForm);

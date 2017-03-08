@@ -3,28 +3,40 @@ import { reduxForm } from 'redux-form';
 import axios from 'axios';
 
 class Login extends Component {
-  
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: ''
+    }
+  }
+
   static contextTypes = {
     router: PropTypes.object
   };
-  
+
   onSubmit(props) {
+    this.props.fields.email.value = '';
+    this.props.fields.password.value = '';
     axios.post("http://families-together.herokuapp.com/login", props)
-     .then( resp => { 
-       localStorage.setItem('token', resp.data.token); 
-       console.log('toktok', localStorage.token);
-        if ( localStorage.token.length) {
+     .then( resp => {
+       console.log('RESP', resp);
+        if ( resp.data.token ) {
+          localStorage.setItem('token', resp.data.token);
           this.context.router.push('/requests');
          } else {
-          this.context.router.push('/login');
+       console.log('RESP', resp.data.error);
+           if ( resp.data.error ) {
+             this.setState({ error: resp.data.error });
+           }
          }
      })
-     .catch( err => console.log( err )); 
-     
+     .catch( err => console.log( err ));
+
   }
-  
+
   render() {
-    
+
     const { fields: { email, password}, pristine, submitting, handleSubmit } = this.props;
 
     return(
@@ -38,19 +50,22 @@ class Login extends Component {
     			  	<div className="panel-body">
     			  	  <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
   			    	  	<div className={`form-group ${email.touched && email.invalid ? 'has-danger' : ''}`}>
-  			    		    <input className='form-control' placeholder="E-mail" type="text" {...email} />
+  			    		    <input className='form-control' placeholder="E-mail" value={email.value || ''} type="text" {...email} />
                     <div className='text-help'>
                       {email.touched ? email.error : ''}
                     </div>
-                
+
     			    		</div>
   			    	  	<div className={`form-group ${password.touched && password.invalid ? 'has-danger' : ''}`}>
   			    		    <input className="form-control" placeholder="Password" type="password" {...password} />
                     <div className='text-help'>
                       {password.touched ? password.error : ''}
                     </div>
+                        <div className='text-help'>
+                            { this.state.error }
+                        </div>
     			    		</div>
-    			    		<button type="submit" className="btn btn-primary">Submit</button>
+    				    <button type="submit" className="btn btn-primary">Submit</button>
     			      </form>
     			    </div>
       			</div>
@@ -64,7 +79,7 @@ class Login extends Component {
 function validate(values) {
   const errors = {};
   const emailPattern = /(.+)@(.+){2,}\.(.+){2,}/;
-  
+
   if (!values.email || !emailPattern.test(values.email)) {
     errors.email = 'Please enter a valid email address.';
   }
@@ -79,4 +94,4 @@ function validate(values) {
 export default reduxForm({
   form: 'LoginForm',
   fields: ['email', 'password'],
-  validate, null, null})(Login);
+  validate})(Login);
