@@ -11,10 +11,10 @@ class NewRequest extends Component {
   };
 
   onSubmit(props) {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     axios.post("http://families-together.herokuapp.com/request", { headers: {'Authorization': token } }, props)
-     .then( resp => { localStorage.setItem('token', resp.data.token); })
+     .then( resp => { sessionStorage.setItem('token', resp.data.token); })
      .then(() => {
        this.context.router.push('/requests/new');
      })

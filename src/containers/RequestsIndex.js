@@ -12,22 +12,22 @@ class RequestsIndex extends Component {
     };
   }
   componentDidMount() {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.token;
     console.log('TOKEN', token);
-    
+
     axios.get("http://families-together.herokuapp.com/requests", {
       headers: {'Authorization': token }
     })
     .then( json  => {
       this.setState({ requests: json.data.ride_requests});
     })
-    .catch( err => console.log( err )); 
+    .catch( err => console.log( err ));
   }
-  
-  
+
+
   render() {
     const requests = this.state.requests.map(request => ( <Request request={request}/> ));
-    
+
     return (
       <div>
         <h2>Requests</h2>
@@ -62,8 +62,4 @@ class RequestsIndex extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return { token: state.token };
-}
-
-export default connect(mapStateToProps)(RequestsIndex);
+export default RequestsIndex;

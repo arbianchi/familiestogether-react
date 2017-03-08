@@ -22,7 +22,7 @@ class Login extends Component {
      .then( resp => {
        console.log('RESP', resp);
         if ( resp.data.token ) {
-          localStorage.setItem('token', resp.data.token);
+          sessionStorage.setItem('token', resp.data.token);
           this.context.router.push('/requests');
          } else {
        console.log('RESP', resp.data.error);

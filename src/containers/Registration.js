@@ -3,22 +3,22 @@ import { reduxForm } from 'redux-form';
 import axios from 'axios';
 
 class Registration extends Component {
-  
+
   static contextTypes = {
     router: PropTypes.object
   };
-  
+
   onSubmit(props) {
     axios.post("http://families-together.herokuapp.com/register", props)
-     .then( resp => { localStorage.setItem('token', resp.data.token); })
+     .then( resp => { sessionStorage.setItem('token', resp.data.token); })
      .then(() => {
        this.context.router.push('/profile/new');
      })
-     .catch( err => console.log( err )); 
+     .catch( err => console.log( err ));
   }
-  
+
   render() {
-    
+
     const { fields: { role, first_name, last_name, email, password, password_confirmation }, handleSubmit } = this.props;
 
     return(
@@ -32,8 +32,8 @@ class Registration extends Component {
     			  	<div className="panel-body">
     			  	  <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                   <div className="form-group">
-                    <label className="radio-inline"><input type="radio" name="volunteer"/>Volunteer</label>
-                    <label className="radio-inline"><input type="radio" name="rider"/>Rider</label>
+                    <label className="radio-inline"><input type="radio" name="volunteer" {...role}/>Volunteer</label>
+                    <label className="radio-inline"><input type="radio" name="rider" {...role}/>Rider</label>
                   </div>
   			    	  	<div className={`form-group ${first_name.touched && first_name.invalid ? 'has-danger' : ''}`}>
   			    		    <input className="form-control" placeholder="First Name" type="text" {...first_name} />
@@ -83,12 +83,12 @@ function validate(values) {
       errors[field] = 'Field cannot be blank'
     }
   }
-  
+
   if ( values.password && values.password.length < 7) {
     errors.password = 'Passwords must be a least 6 characters long.';
   }
-  
-  if (values.password != values.password_confirmation) {
+
+  if (values.password !== values.password_confirmation) {
     errors.password_confirmation = 'Password does not match.';
   }
   return errors;
@@ -96,5 +96,4 @@ function validate(values) {
 
 export default reduxForm({
   form: 'RegistrationForm',
-  fields: ['role', 'first_name', 'last_name', 'email', 'password', 'password_confirmation'], validate}
-, null, null)(Registration);
+  fields: ['role', 'first_name', 'last_name', 'email', 'password', 'password_confirmation'], validate})(Registration);

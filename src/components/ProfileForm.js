@@ -9,10 +9,11 @@ class ProfileForm extends Component {
   };
 
   onSubmit(props) {
-    axios.post("http://families-together.herokuapp.com/profile/new", props)
+    const token = sessionStorage.getItem('token');
+
+    axios.post("http://families-together.herokuapp.com/profile/new",  { headers: {'Authorization': token } }, props)
      .then( resp => {
-       localStorage.setItem('token', resp.data.token);
-        if ( localStorage.token.length) {
+        if ( !resp.data.error) {
           this.context.router.push('/profile');
          } else {
           this.context.router.push('/profile/new');

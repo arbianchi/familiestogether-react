@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { Nav, Navbar, NavDropdown, NavItem, MenuItem, Jumbotron, Button  } from 'react-bootstrap';
-import { Link } from 'react-router';
-
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
 
 export default class NavbarContainer extends Component {
   renderNavItems(){
-    if (localStorage.token){
+
+    function logout() {
+        sessionStorage.clear();
+    }
+
+    if (sessionStorage.token){
       return(
         <Nav>
           <NavItem eventKey={3} href="/requests">Requests</NavItem>
           <NavItem eventKey={4} href="/availability">Availability</NavItem>
-          <NavItem eventKey={2} href="/login" onClick={localStorage.clear()}>Logout</NavItem>
+          <NavItem eventKey={2} href="/login" onClick={logout}>Logout</NavItem>
         </Nav>
       );
     } else {
@@ -22,9 +25,10 @@ export default class NavbarContainer extends Component {
       );
     }
   }
+
   render() {
-    let loggedIn = localStorage.token ? true : false;
-    console.log('loggedin', loggedIn);
+    let loggedIn = sessionStorage.token ? true : false;
+    console.log('loggedin', sessionStorage.token);
     return (
       <div>
         <Navbar>
@@ -34,7 +38,7 @@ export default class NavbarContainer extends Component {
             </Navbar.Brand>
           </Navbar.Header>
             { this.renderNavItems() }
-        </Navbar>    
+        </Navbar>
       </div>
     );
   }
