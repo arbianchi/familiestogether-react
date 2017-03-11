@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { SingleDatePicker } from 'react-dates';
-import { DateRangePicker } from 'react-dates';
 
 
 
@@ -55,48 +54,32 @@ export default class AvailabilityIndex extends Component {
     super(props);
     this.state = {
       availabilities: [],
-      date: null,
-      focused: false,
-      focusedInput: null,
-      startDate: null,
-      endDate: null
+      datetime: null,
     };
-    
-    
-    this.onDatesChange = this.onDatesChange.bind(this);
-    this.onFocusChange = this.onFocusChange.bind(this);
+
+
   }
-  
+
   getCurrentUserId() {
     return 3;
   }
-  
-  onDatesChange({ startDate, endDate }) {
-    this.setState({ startDate, endDate });
-  }
 
-  onFocusChange(focusedInput) {
-    this.setState({ focusedInput });
-  }
 
-  
   componentDidMount() {
-    // let userId = getCurrentUserId();
-    // axios.get("http://families-together.herokuapp.com/users/${userId}/availabilities.json")
-    // .then( response => response.json() )
-    // .then( json  => {
-    //   this.setState({ requests: json.requests });
-    // })
-    // .catch( err => console.log( err )); 
-    
+    let userId = sessionStorage.id;
+    axios.get("http://families-together.herokuapp.com/users/" + userId + "availabilities.json")
+    .then( response => response.json() )
+    .then( json  => {
+      this.setState({ requests: json.requests });
+    })
+    .catch( err => console.log( err ));
+
     this.setState({ availabilities: dummy.availabilities });
   }
 
   render() {
-    const { focusedInput, startDate, endDate } = this.state;
-
     const availabilities = this.state.availabilities.map( availability => ( <Availability availability={availability} key={availability.id}/> ));
-    
+
     return (
       <div>
         <h2>My Availability</h2>
@@ -104,7 +87,7 @@ export default class AvailabilityIndex extends Component {
         <div className="panel panel-default">
           <div className="panel-heading">
             <h2 className="panel-title">
-              Available Times  
+              Available Times
             </h2>
           </div>
           <table className="table table-bordered table-hover panel-body">
@@ -121,13 +104,8 @@ export default class AvailabilityIndex extends Component {
           </table>
         </div>
         <div>
-           <DateRangePicker
+           <SingleDatePicker
              {...this.props}
-             onDatesChange={this.onDatesChange}
-             onFocusChange={this.onFocusChange}
-             focusedInput={focusedInput}
-             startDate={startDate}
-             endDate={endDate}
            />
          </div>
       </div>

@@ -37,7 +37,7 @@ class Login extends Component {
 
   render() {
 
-    const { fields: { email, password}, pristine, submitting, handleSubmit } = this.props;
+    const { fields: { email, password}, handleSubmit } = this.props;
 
     return(
       <div className="container">

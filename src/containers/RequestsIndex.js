@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Request from '../components/Request';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 class RequestsIndex extends Component {

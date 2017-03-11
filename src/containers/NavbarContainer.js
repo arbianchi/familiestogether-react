@@ -27,7 +27,6 @@ export default class NavbarContainer extends Component {
   }
 
   render() {
-    let loggedIn = sessionStorage.token ? true : false;
     console.log('loggedin', sessionStorage.token);
     return (
       <div>
